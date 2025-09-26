@@ -72,7 +72,7 @@ def _get_llm() -> ChatGroq:
 def _summarize(chunks: List[Document]) -> str:
     llm = _get_llm()
     prompt = ChatPromptTemplate.from_template(
-        "Summarize the following documentation in 3–5 sentences:\n<context>\n{context}\n</context>"
+        "Summarize the following documentation in 3 sentences:\n<context>\n{context}\n</context>"
     )
     chain = create_stuff_documents_chain(llm=llm, prompt=prompt)
     result = chain.invoke({"context": chunks})
@@ -126,7 +126,7 @@ def qa(req: QAReq):
     retriever = vector.as_retriever(search_kwargs={"k": 4})
     llm = _get_llm()
     qa_prompt = ChatPromptTemplate.from_template(
-        "Give correct answers to the questions taking from provided context and general knowledgec .\n"
+        "Give correct answers to the questions taking from provided context and general knowledge, keep answers short and informative .\n"
         "<context>\n{context}\n</context>\nQuestion: {input}"
     )
     chain = create_stuff_documents_chain(llm=llm, prompt=qa_prompt)
@@ -137,3 +137,4 @@ def qa(req: QAReq):
     return QARes(url=req.url, question=req.question, answer=answer if isinstance(answer, str) else str(answer), sources=src)
 
 # --- Run: uvicorn main:app --reload --port 8000
+
