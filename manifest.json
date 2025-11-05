@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Prompt Pages",
+  "version": "1.0",
+  "description": "Ask AI questions about any documentation page.",
+  "permissions": ["storage", "activeTab", "contextMenus", "sidePanel"],
+  "host_permissions": [
+    "https://prompt-pages-api.onrender.com*",
+    "http://localhost:8000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "panel.html"
+  },
+  "icons": {
+    "16": "icons/program.png",
+    "48": "icons/program.png",
+    "128": "icons/program.png"
+  }
+}
