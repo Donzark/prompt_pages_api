@@ -136,6 +136,5 @@ def qa(req: QAReq):
     src = [d.page_content[:500] for d in docs] if docs else []
     return QARes(url=req.url, question=req.question, answer=answer if isinstance(answer, str) else str(answer), sources=src)
 
-# --- Run: uvicorn main:app --reload --port 8000
 
 

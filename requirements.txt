@@ -8,5 +8,6 @@ langchain-community
 langchain-core
 langchain-groq
 langchain-cohere
+langchain-text-splitters
 faiss-cpu
 pydantic
