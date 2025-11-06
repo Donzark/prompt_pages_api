@@ -2,7 +2,8 @@ services:
   - type: web
     name: prompt-pages-api
     env: python
-    plan: free   # or starter/standard depending on usage
+    pythonVersion: "3.12"
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
     envVars:
