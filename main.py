@@ -32,7 +32,7 @@ allowed = os.getenv("ALLOWED_ORIGINS", "*")
 origins = [o.strip() for o in allowed.split(",")] if allowed else ["*"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # e.g. ["chrome-extension://<your-extension-id>"] in prod
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
