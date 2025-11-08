@@ -15,8 +15,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_cohere import CohereEmbeddings
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
-# from langchain.chains import create_stuff_documents_chain
-# from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
 
 
 load_dotenv()
@@ -72,9 +71,20 @@ def _get_llm() -> ChatGroq:
 
 def _summarize(chunks: List[Document]) -> str:
     llm = _get_llm()
-    prompt = ChatPromptTemplate.from_template(
-        "Very breifly summarize the following documentation:\n<context>\n{context}\n</context>"
-    )
+    prompt = ChatPromptTemplate.from_template("""
+You are a professional consise technical writer.
+Very briefly summarize the following documentation clearly and neatly in markdown format, informing the user about the key concepts and structure.
+
+**Formatting rules:**
+- Use bullet points or numbered lists when appropriate.
+- Use bold headers for major topics.
+- Add paragraph breaks for readability.
+- Do not repeat content unnecessarily.
+
+<context>
+{context}
+</context>
+""")
     chain = create_stuff_documents_chain(llm=llm, prompt=prompt)
     result = chain.invoke({"context": chunks})
     return result if isinstance(result, str) else str(result)
@@ -126,10 +136,22 @@ def qa(req: QAReq):
     vector: FAISS = _cache[req.url]["vector"]
     retriever = vector.as_retriever(search_kwargs={"k": 4})
     llm = _get_llm()
-    qa_prompt = ChatPromptTemplate.from_template(
-        "Give correct answers to the questions taking from provided context and general knowledge, keep answers short and informative .\n"
-        "<context>\n{context}\n</context>\nQuestion: {input}"
-    )
+    qa_prompt = ChatPromptTemplate.from_template("""
+    You are a concise and professional AI assistant. 
+    Answer the user’s question using the provided context and general knowledge. keep your answer clear and to the point.
+
+    **Formatting rules:**
+    - Always format your response in Markdown.
+    - Use bullet points, subheadings, and paragraphs where needed.
+    - For any code, enclose it in triple backticks (```language).
+    - Do not include unnecessary prefaces or apologies.
+
+    <context>
+    {context}
+    </context>
+
+    **Question:** {input}
+    """)
     chain = create_stuff_documents_chain(llm=llm, prompt=qa_prompt)
     # Pull docs and run
     docs = retriever.invoke(req.question)

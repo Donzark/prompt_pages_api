@@ -16,5 +16,5 @@ chrome.contextMenus.onClicked.addListener((info) => {
 });
 
 chrome.action.onClicked.addListener((tab) => {
-  chrome.sidePanel.open({ windowId: tab.windowId }); // Opens your side panel immediately
+  chrome.sidePanel.open({ windowId: tab.windowId }); // Opens the side panel immediately
 });

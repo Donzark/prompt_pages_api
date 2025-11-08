@@ -1,5 +1,5 @@
 // ==== CONFIG ====
-const API_BASE = "https://prompt-pages-api.onrender.com";
+const API_BASE = "https://prompt-pages-api.onrender.com"; //"http://localhost:8000";
 
 const $ = (id) => document.getElementById(id);
 const summaryBox = $("summary");
@@ -8,6 +8,7 @@ const urlInput = $("url");
 const qInput = $("question");
 const btnSummary = $("btn-summary");
 const btnAsk = $("btn-ask");
+const historyList = $("history-list");
 
 // Prefill URL from active tab (best effort)
 chrome.tabs &&
@@ -69,9 +70,20 @@ btnAsk.addEventListener("click", async () => {
 
   try {
     const data = await postJSON("/qa", { url, question });
+    const answerHtml = marked.parse(data.answer || "(No answer)"); // 1. Show the current answer in the main box
 
-    // Render Markdown properly here too
-    answerBox.innerHTML = marked.parse(data.answer || "(No answer)");
+    answerBox.innerHTML = answerHtml; // 2. Create new elements for the history
+
+    const qDiv = document.createElement("div");
+    qDiv.className = "history-question";
+    qDiv.textContent = question;
+
+    const aDiv = document.createElement("div");
+    aDiv.className = "history-answer";
+    aDiv.innerHTML = answerHtml; // Use the same parsed HTML // 3. Add them to the top of the history list
+
+    historyList.prepend(aDiv);
+    historyList.prepend(qDiv); // 4. Save and clear
 
     chrome.storage &&
       chrome.storage.local.set({ lastUrl: url, lastQ: question });
@@ -87,5 +99,5 @@ btnAsk.addEventListener("click", async () => {
 chrome.storage &&
   chrome.storage.local.get(["lastUrl", "lastQ"], (data) => {
     if (data.lastUrl && !urlInput.value) urlInput.value = data.lastUrl;
-    if (data.lastQ && !qInput.value) qInput.value = data.lastQ;
+    //if (data.lastQ && !qInput.value) qInput.value = data.lastQ;
   });

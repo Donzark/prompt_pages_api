@@ -69,14 +69,19 @@ section h3 {
   color: #f5f5f5;
 }
 input[type="url"],
-input[type="text"] {
-  width: calc(100% - 12px);
+input[type="text"],
+textarea {
+  width: 100%;
+  box-sizing: border-box; /* Ensures padding doesn't break layout */
   padding: 0.6rem;
   border-radius: 8px;
   border: 1px solid #30363d;
   margin-bottom: 0.6rem;
   background: #0d1117;
   color: #f5f5f5;
+  font-family: "Segoe UI", Roboto, sans-serif; /* Makes font match */
+  font-size: 14px; /* Makes font size match */
+  resize: vertical; /* Allows user to resize height only */
 }
 button {
   width: 100%;
@@ -168,4 +173,28 @@ footer .author {
 
 .card ul {
   padding-left: 1.5rem;
+}
+
+/* ==== CUSTOM SCROLLBAR ==== */
+
+/* Targets all scrollbars (vertical and horizontal) */
+::-webkit-scrollbar {
+  width: 6px; /* Makes the vertical scrollbar thinner */
+  height: 6px; /* Makes the horizontal scrollbar thinner */
+}
+
+/* The "track" (the background of the scrollbar) */
+::-webkit-scrollbar-track {
+  background: transparent; /* Makes the track invisible */
+}
+
+/* The draggable "thumb" (the handle) */
+::-webkit-scrollbar-thumb {
+  background: #30363d; /* A subtle dark grey, matching your borders */
+  border-radius: 10px; /* Gives it rounded corners */
+}
+
+/* The thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Makes it slightly more visible when you hover */
 }

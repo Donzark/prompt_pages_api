@@ -41,7 +41,11 @@
       <!-- Question Section -->
       <section class="question-section">
         <h3>💬 Ask a question from the documentation</h3>
-        <input id="question" type="text" placeholder="What does this API do?" />
+        <textarea
+          id="question"
+          placeholder="What does this API do?"
+          rows="4"
+        ></textarea>
         <button id="btn-ask">Ask</button>
         <div id="answer" class="card"></div>
       </section>
@@ -59,7 +63,14 @@
         <p class="author"></p>
       </footer>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Markdown rendering + syntax highlighting -->
+    <script src="lib/marked.min.js"></script>
+    <link rel="stylesheet" href="lib/github-dark.min.css" />
+    <script src="lib/highlight.min.js"></script>
+
+    <script src="configure_marked.js"></script>
+
     <script src="popup.js"></script>
   </body>
 </html>
